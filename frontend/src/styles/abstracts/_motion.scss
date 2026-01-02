@@ -1,0 +1,488 @@
+// ============================================================================
+// Carbon Motion Token System
+// IBM Carbon Design System - Animation & Motion Standards
+// ============================================================================
+
+// -----------------------------------------------------------------------------
+// Duration Tokens
+// -----------------------------------------------------------------------------
+
+// Fast durations - micro-interactions, toggles, icon changes
+$duration-fast-01: 70ms;   // Micro-interactions
+$duration-fast-02: 110ms;  // Small UI element changes
+
+// Moderate durations - most UI transitions
+$duration-moderate-01: 150ms;  // Standard UI transitions
+$duration-moderate-02: 240ms;  // Complex UI transitions
+
+// Slow durations - large elements, page-level transitions
+$duration-slow-01: 400ms;  // Large element transitions
+$duration-slow-02: 700ms;  // Page transitions, complex animations
+
+// CSS Custom Properties for durations
+:root {
+  --cds-duration-fast-01: #{$duration-fast-01};
+  --cds-duration-fast-02: #{$duration-fast-02};
+  --cds-duration-moderate-01: #{$duration-moderate-01};
+  --cds-duration-moderate-02: #{$duration-moderate-02};
+  --cds-duration-slow-01: #{$duration-slow-01};
+  --cds-duration-slow-02: #{$duration-slow-02};
+}
+
+// -----------------------------------------------------------------------------
+// Easing Functions
+// -----------------------------------------------------------------------------
+
+// Standard easing - most common, balanced feel
+$ease-standard-productive: cubic-bezier(0.2, 0, 0.38, 0.9);
+$ease-standard-expressive: cubic-bezier(0.4, 0.14, 0.3, 1);
+
+// Entrance easing - elements entering view
+$ease-entrance-productive: cubic-bezier(0, 0, 0.38, 0.9);
+$ease-entrance-expressive: cubic-bezier(0, 0, 0.3, 1);
+
+// Exit easing - elements leaving view
+$ease-exit-productive: cubic-bezier(0.2, 0, 1, 0.9);
+$ease-exit-expressive: cubic-bezier(0.4, 0.14, 1, 1);
+
+// CSS Custom Properties for easing
+:root {
+  --cds-ease-standard-productive: #{$ease-standard-productive};
+  --cds-ease-standard-expressive: #{$ease-standard-expressive};
+  --cds-ease-entrance-productive: #{$ease-entrance-productive};
+  --cds-ease-entrance-expressive: #{$ease-entrance-expressive};
+  --cds-ease-exit-productive: #{$ease-exit-productive};
+  --cds-ease-exit-expressive: #{$ease-exit-expressive};
+}
+
+// -----------------------------------------------------------------------------
+// Motion Mode - Productive vs Expressive
+// -----------------------------------------------------------------------------
+
+// Productive motion - functional UI, efficient
+$motion-mode: 'productive' !default;
+
+// Motion mode selector
+@function get-ease($type: 'standard') {
+  @if $motion-mode == 'expressive' {
+    @if $type == 'standard' { @return $ease-standard-expressive; }
+    @if $type == 'entrance' { @return $ease-entrance-expressive; }
+    @if $type == 'exit' { @return $ease-exit-expressive; }
+  } @else {
+    @if $type == 'standard' { @return $ease-standard-productive; }
+    @if $type == 'entrance' { @return $ease-entrance-productive; }
+    @if $type == 'exit' { @return $ease-exit-productive; }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Transition Mixins
+// -----------------------------------------------------------------------------
+
+// Base transition mixin
+@mixin transition(
+  $property: all,
+  $duration: $duration-moderate-01,
+  $easing: $ease-standard-productive,
+  $delay: 0ms
+) {
+  transition: $property $duration $easing $delay;
+}
+
+// Transition with multiple properties
+@mixin transition-multiple($transitions...) {
+  $value: ();
+  @each $t in $transitions {
+    $value: append($value, $t, comma);
+  }
+  transition: $value;
+}
+
+// Quick micro-interaction
+@mixin transition-fast($property: all) {
+  transition: $property $duration-fast-01 $ease-standard-productive;
+}
+
+// Standard UI transition
+@mixin transition-standard($property: all) {
+  transition: $property $duration-moderate-01 $ease-standard-productive;
+}
+
+// Slow, prominent transition
+@mixin transition-slow($property: all) {
+  transition: $property $duration-slow-01 $ease-standard-productive;
+}
+
+// Entrance animation
+@mixin transition-entrance($property: all, $duration: $duration-moderate-02) {
+  transition: $property $duration $ease-entrance-productive;
+}
+
+// Exit animation
+@mixin transition-exit($property: all, $duration: $duration-moderate-01) {
+  transition: $property $duration $ease-exit-productive;
+}
+
+// -----------------------------------------------------------------------------
+// Transform Origin Utilities
+// -----------------------------------------------------------------------------
+
+@mixin transform-origin-center {
+  transform-origin: center center;
+}
+
+@mixin transform-origin-top {
+  transform-origin: center top;
+}
+
+@mixin transform-origin-bottom {
+  transform-origin: center bottom;
+}
+
+// -----------------------------------------------------------------------------
+// Animation Keyframes
+// -----------------------------------------------------------------------------
+
+// Fade in
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// Fade out
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+// Slide in from top
+@keyframes slide-in-top {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Slide in from bottom
+@keyframes slide-in-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Slide in from left
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Slide in from right
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Scale in (modal, popover)
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Scale out
+@keyframes scale-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+// Skeleton loading shimmer
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+// Pulse (loading indicator)
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+// Spin (loading spinner)
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Notification enter
+@keyframes notification-enter {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Notification exit
+@keyframes notification-exit {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Animation Mixins
+// -----------------------------------------------------------------------------
+
+@mixin animate($name, $duration: $duration-moderate-02, $easing: $ease-entrance-productive, $delay: 0ms, $fill: forwards) {
+  animation: $name $duration $easing $delay $fill;
+}
+
+@mixin animate-fade-in($duration: $duration-moderate-01) {
+  @include animate(fade-in, $duration);
+}
+
+@mixin animate-slide-in-top($duration: $duration-moderate-02) {
+  @include animate(slide-in-top, $duration, $ease-entrance-productive);
+}
+
+@mixin animate-slide-in-bottom($duration: $duration-moderate-02) {
+  @include animate(slide-in-bottom, $duration, $ease-entrance-productive);
+}
+
+@mixin animate-slide-in-left($duration: $duration-moderate-02) {
+  @include animate(slide-in-left, $duration, $ease-entrance-productive);
+}
+
+@mixin animate-slide-in-right($duration: $duration-moderate-02) {
+  @include animate(slide-in-right, $duration, $ease-entrance-productive);
+}
+
+@mixin animate-scale-in($duration: $duration-moderate-02) {
+  @include animate(scale-in, $duration, $ease-entrance-expressive);
+}
+
+// Skeleton loading
+@mixin skeleton-animation {
+  background: linear-gradient(
+    90deg,
+    var(--cds-skeleton-background, #e0e0e0) 0%,
+    var(--cds-skeleton-element, #c6c6c6) 50%,
+    var(--cds-skeleton-background, #e0e0e0) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+// -----------------------------------------------------------------------------
+// Stagger Animation Utilities
+// -----------------------------------------------------------------------------
+
+// Stagger delay for list items
+@mixin stagger-delay($count: 10, $base-delay: 50ms) {
+  @for $i from 1 through $count {
+    &:nth-child(#{$i}) {
+      animation-delay: calc(#{$base-delay} * #{$i});
+    }
+  }
+}
+
+// Stagger children
+@mixin stagger-children($delay: 50ms) {
+  > * {
+    @include stagger-delay(20, $delay);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Reduced Motion Support
+// -----------------------------------------------------------------------------
+
+// Check for reduced motion preference
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+// Apply reduced motion styles
+@mixin motion-safe {
+  @media (prefers-reduced-motion: no-preference) {
+    @content;
+  }
+}
+
+// Reduce all animations
+@mixin reduce-motion {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+// Global reduced motion styles
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Interactive State Transitions
+// -----------------------------------------------------------------------------
+
+// Button transitions
+@mixin button-transition {
+  @include transition-multiple(
+    background-color $duration-fast-02 $ease-standard-productive,
+    border-color $duration-fast-02 $ease-standard-productive,
+    color $duration-fast-02 $ease-standard-productive,
+    box-shadow $duration-fast-02 $ease-standard-productive
+  );
+}
+
+// Focus ring transition
+@mixin focus-transition {
+  @include transition(outline, $duration-fast-01, $ease-standard-productive);
+}
+
+// Link hover transition
+@mixin link-transition {
+  @include transition(color, $duration-fast-02, $ease-standard-productive);
+}
+
+// Card hover transition
+@mixin card-transition {
+  @include transition-multiple(
+    transform $duration-moderate-01 $ease-standard-productive,
+    box-shadow $duration-moderate-01 $ease-standard-productive
+  );
+}
+
+// Icon rotation
+@mixin icon-rotate-transition {
+  @include transition(transform, $duration-fast-02, $ease-standard-productive);
+}
+
+// Sidebar slide transition
+@mixin sidebar-transition {
+  @include transition(transform, $duration-moderate-02, $ease-standard-productive);
+}
+
+// Modal backdrop
+@mixin backdrop-transition {
+  @include transition(opacity, $duration-moderate-01, $ease-entrance-productive);
+}
+
+// Panel expand/collapse
+@mixin panel-transition {
+  @include transition-multiple(
+    max-height $duration-moderate-02 $ease-standard-productive,
+    opacity $duration-moderate-01 $ease-standard-productive
+  );
+}
+
+// Tab indicator
+@mixin tab-indicator-transition {
+  @include transition-multiple(
+    left $duration-fast-02 $ease-standard-productive,
+    width $duration-fast-02 $ease-standard-productive
+  );
+}
+
+// -----------------------------------------------------------------------------
+// Utility Classes
+// -----------------------------------------------------------------------------
+
+.motion-fade-in {
+  @include animate-fade-in;
+}
+
+.motion-slide-in-top {
+  @include animate-slide-in-top;
+}
+
+.motion-slide-in-bottom {
+  @include animate-slide-in-bottom;
+}
+
+.motion-scale-in {
+  @include animate-scale-in;
+}
+
+.motion-skeleton {
+  @include skeleton-animation;
+}
+
+.motion-stagger {
+  @include stagger-children;
+}
+
+// No animation utility
+.motion-none {
+  animation: none !important;
+  transition: none !important;
+}

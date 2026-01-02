@@ -3,6 +3,7 @@
 // ============================================
 
 #import "../templates/typst/carbon-components.typ": *
+#import "../templates/typst/carbon-icons.typ": icon
 
 // ============================================
 // COMPONENT SHOWCASE
@@ -60,21 +61,21 @@ Tiles are clickable cards with accent indicators:
   tile(
     "Typography",
     description: "IBM Plex font family with complete type scale",
-    icon: "Aa",
+    icon: icon("document", size: 24pt, color: blue-60),
     accent: blue-60
   ),
 
   tile(
     "Colors",
     description: "100 colors across 10 families with 4 themes",
-    icon: "🎨",
+    icon: icon("chart-bar", size: 24pt, color: purple-60),
     accent: purple-60
   ),
 
   tile(
     "Charts",
     description: "Data visualization with 7+ chart types",
-    icon: "📊",
+    icon: icon("chart-line", size: 24pt, color: green-60),
     accent: green-60
   )
 )
@@ -398,28 +399,28 @@ Highlight key features with icons:
   feature-card(
     "Enterprise Ready",
     "Production-quality templates following IBM design standards",
-    icon: "✓",
+    icon: icon("checkmark", size: 18pt, color: white),
     color: green-60
   ),
 
   feature-card(
     "Fully Accessible",
     "WCAG AA compliant colors and proper semantic structure",
-    icon: "♿",
+    icon: icon("user", size: 18pt, color: white),
     color: blue-60
   ),
 
   feature-card(
     "Fast Compilation",
     "Typst compiles PDFs in milliseconds, not minutes",
-    icon: "⚡",
+    icon: icon("arrow-right", size: 18pt, color: white),
     color: purple-60
   ),
 
   feature-card(
     "Open Source",
     "All code available under open-source licenses",
-    icon: "❤",
+    icon: icon("link", size: 18pt, color: white),
     color: red-60
   )
 )

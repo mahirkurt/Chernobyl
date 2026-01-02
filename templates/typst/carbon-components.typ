@@ -3,6 +3,8 @@
 // Reusable UI components for professional documents
 // ============================================
 
+#import "carbon-icons.typ": icon
+
 // ============================================
 // CARBON COLOR PALETTE
 // ============================================
@@ -218,14 +220,14 @@
   kind: "info",
   dismissible: false
 ) = {
-  let (bg, border-color, icon) = if kind == "success" {
-    (green-10, green-60, "✓")
+  let (bg, border-color, icon-name, icon-color) = if kind == "success" {
+    (green-10, green-60, "checkmark", green-60)
   } else if kind == "error" {
-    (red-10, red-60, "✕")
+    (red-10, red-60, "error", red-60)
   } else if kind == "warning" {
-    (yellow-10, yellow-30, "⚠")
+    (yellow-10, yellow-30, "warning", yellow-30)
   } else {
-    (blue-10, blue-60, "ℹ")
+    (blue-10, blue-60, "info", blue-60)
   }
 
   v(sp-05)
@@ -240,7 +242,7 @@
       columns: (auto, 1fr, auto),
       column-gutter: sp-04,
       align(horizon)[
-        #text(size: 16pt, fill: border-color)[#icon]
+        #icon(icon-name, size: 18pt, color: icon-color)
       ],
       stack(
         dir: ttb,
@@ -268,21 +270,21 @@
   content,
   title: none,
   type: "note",
-  icon: none
+  icon-override: none
 ) = {
-  let (bg, border, default-icon) = if type == "tip" {
-    (green-10, green-60, "💡")
+  let (bg, border, icon-name, icon-color) = if type == "tip" {
+    (green-10, green-60, "success", green-60)
   } else if type == "warning" {
-    (yellow-10, yellow-30, "⚠️")
+    (yellow-10, yellow-30, "warning", yellow-30)
   } else if type == "important" {
-    (red-10, red-60, "❗")
+    (red-10, red-60, "error", red-60)
   } else if type == "note" {
-    (blue-10, blue-60, "📝")
+    (blue-10, blue-60, "info", blue-60)
   } else {
-    (gray-10, gray-70, "ℹ️")
+    (gray-10, gray-70, "info", gray-70)
   }
 
-  let display-icon = if icon != none { icon } else { default-icon }
+  let display-icon = if icon-override != none { icon-override } else { icon(icon-name, size: 16pt, color: icon-color) }
 
   v(sp-06)
   block(
@@ -292,11 +294,11 @@
     inset: sp-05,
     radius: (right: 4pt)
   )[
-    #if title != none or icon != none {
+    #if title != none or icon-override != none {
       grid(
         columns: (auto, 1fr),
         column-gutter: sp-03,
-        text(size: 14pt)[#display-icon],
+        display-icon,
         text(size: 13pt, weight: 600, fill: theme-text-primary)[
           #if title != none { title } else { upper(type) }
         ]

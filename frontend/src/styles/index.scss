@@ -99,6 +99,20 @@ body {
   flex: 1;
 }
 
+// Header Logo
+.header-logo-link {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 1rem;
+  text-decoration: none;
+}
+
+.header-logo {
+  height: 24px;
+  width: auto;
+}
+
 // Page container
 .page-container {
   display: flex;

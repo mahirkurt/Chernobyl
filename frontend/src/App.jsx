@@ -201,10 +201,14 @@ function App() {
     <Theme theme={theme}>
       <div className="page-container">
         {/* Header */}
-        <Header aria-label="Carbon PDF Converter">
-          <HeaderName href="#" prefix="Carbon">
-            PDF Converter
-          </HeaderName>
+        <Header aria-label="Carbonac">
+          <a href="/" className="header-logo-link">
+            <img 
+              src={theme === 'white' ? '/logos/Carbonac-Dark-Wide.png' : '/logos/Carbonac-Light-Wide.png'} 
+              alt="Carbonac" 
+              className="header-logo"
+            />
+          </a>
           
           <HeaderNavigation aria-label="Main navigation">
             <HeaderMenuItem href="#">Editör</HeaderMenuItem>

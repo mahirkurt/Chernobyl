@@ -5,13 +5,18 @@
   "main": "src/index.js",
   "type": "module",
   "bin": {
-    "carbon-pdf": "./src/cli.js"
+    "carbon-pdf": "./src/cli.js",
+    "carbon-advisor": "./src/ai/advisor-cli.js"
   },
   "scripts": {
     "convert:typst": "node src/convert-typst.js",
     "convert:quarto": "node src/convert-quarto.js",
     "convert:both": "npm run convert:typst && npm run convert:quarto",
     "example": "node src/cli.js examples/sample.md",
+    "advisor": "node src/ai/advisor-cli.js",
+    "advisor:analyze": "node src/ai/advisor-cli.js analyze",
+    "advisor:chat": "node src/ai/advisor-cli.js chat",
+    "advisor:tips": "node src/ai/advisor-cli.js tips",
     "test": "node src/test.js"
   },
   "keywords": [

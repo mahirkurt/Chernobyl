@@ -21,6 +21,13 @@ export {
   getOutputPath
 } from './utils/file-utils.js';
 
+// AI-powered Carbon Design Advisor
+export {
+  analyzeDocument,
+  analyzeFile,
+  askDesignQuestion
+} from './ai/carbon-advisor.js';
+
 /**
  * Convert markdown to PDF using specified engine
  * @param {string} inputPath - Path to markdown file

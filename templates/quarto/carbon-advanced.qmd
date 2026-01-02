@@ -241,6 +241,95 @@ format:
         \usepackage{array}
 
         % ============================================
+        % CALLOUT BOXES (Note, Tip, Warning, Important)
+        % ============================================
+
+        % Note callout (Blue)
+        \newtcolorbox{carbonnote}{
+          colback=blue-10,
+          colframe=carbonBlue60,
+          leftrule=4pt,
+          rightrule=0pt,
+          toprule=0pt,
+          bottomrule=0pt,
+          arc=4pt,
+          boxsep=12pt,
+          title={\textbf{Note}},
+          fonttitle=\color{carbonBlue60}\fontsize{12}{16}\selectfont,
+          coltitle=carbonBlue60,
+          attach boxed title to top left={yshift=-2mm, xshift=4mm}
+        }
+
+        % Tip callout (Green)
+        \newtcolorbox{carbontip}{
+          colback=carbonGreen10,
+          colframe=carbonGreen50,
+          leftrule=4pt,
+          rightrule=0pt,
+          toprule=0pt,
+          bottomrule=0pt,
+          arc=4pt,
+          boxsep=12pt
+        }
+
+        % Warning callout (Yellow)
+        \newtcolorbox{carbonwarning}{
+          colback=yellow-10,
+          colframe=yellow-30,
+          leftrule=4pt,
+          rightrule=0pt,
+          toprule=0pt,
+          bottomrule=0pt,
+          arc=4pt,
+          boxsep=12pt
+        }
+
+        % Important/Error callout (Red)
+        \newtcolorbox{carbonimportant}{
+          colback=red-10,
+          colframe=carbonRed60,
+          leftrule=4pt,
+          rightrule=0pt,
+          toprule=0pt,
+          bottomrule=0pt,
+          arc=4pt,
+          boxsep=12pt
+        }
+
+        % ============================================
+        % BADGE/TAG COMMANDS
+        % ============================================
+
+        \newcommand{\carbonbadge}[2][carbonBlue60]{%
+          \colorbox{#1!15}{%
+            \textcolor{#1}{\fontsize{10}{12}\selectfont\bfseries #2}%
+          }%
+        }
+
+        \newcommand{\carbontag}[1]{%
+          \fcolorbox{carbonGray20}{carbonGray10}{%
+            \fontsize{10}{12}\selectfont #1%
+          }%
+        }
+
+        % ============================================
+        % STAT TILE COMMAND
+        % ============================================
+
+        \newcommand{\carbonstat}[2]{%
+          \begin{tcolorbox}[
+            colback=carbonGray10,
+            colframe=carbonGray20,
+            arc=4pt,
+            boxsep=16pt
+          ]
+          \centering
+          {\color{carbonBlue60}\fontsize{36}{44}\fontseries{l}\selectfont #1}\\[8pt]
+          {\color{carbonGray70}\fontsize{10}{14}\selectfont\MakeUppercase{#2}}
+          \end{tcolorbox}%
+        }
+
+        % ============================================
         % HYPERLINKS
         % ============================================
 

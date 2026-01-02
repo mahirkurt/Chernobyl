@@ -481,6 +481,224 @@
 }
 
 // ============================================
+// PROGRESS BAR
+// ============================================
+
+#let progress-bar(
+  value,
+  max: 100,
+  label: none,
+  show-percentage: true,
+  color: blue-60,
+  height: 8pt
+) = {
+  let percentage = calc.min(value / max * 100, 100)
+  
+  v(sp-03)
+  if label != none {
+    text(size: 11pt, weight: 600, fill: theme-text-primary)[#label]
+    v(sp-02)
+  }
+  
+  block(
+    width: 100%,
+    height: height,
+    fill: gray-20,
+    radius: height / 2
+  )[
+    #block(
+      width: percentage * 1%,
+      height: 100%,
+      fill: color,
+      radius: height / 2
+    )
+  ]
+  
+  if show-percentage {
+    v(sp-02)
+    text(size: 10pt, fill: theme-text-secondary)[#calc.round(percentage)%]
+  }
+  v(sp-03)
+}
+
+// ============================================
+// METER / GAUGE
+// ============================================
+
+#let meter(
+  value,
+  max: 100,
+  label: none,
+  color: blue-60,
+  size: 80pt
+) = {
+  let percentage = calc.min(value / max * 100, 100)
+  let angle = percentage * 1.8  // 180 degrees for half circle
+  
+  align(center)[
+    #block(width: size, height: size / 2 + 20pt)[
+      // Background arc (gray)
+      #place(center + top)[
+        #circle(radius: size / 2, fill: none, stroke: 8pt + gray-20)
+      ]
+      // Value display
+      #place(center + bottom, dy: -10pt)[
+        #text(size: size / 4, weight: 300, fill: color)[#value]
+        #v(-sp-02)
+        #if label != none {
+          text(size: 10pt, fill: theme-text-secondary)[#label]
+        }
+      ]
+    ]
+  ]
+}
+
+// ============================================
+// STAT TILE (Enhanced KPI Display)
+// ============================================
+
+#let stat-tile(
+  value,
+  label,
+  trend: none,
+  trend-value: none,
+  color: blue-60
+) = {
+  block(
+    width: 100%,
+    fill: theme-layer-01,
+    stroke: 1pt + theme-border-subtle,
+    radius: 4pt,
+    inset: sp-05
+  )[
+    #text(size: 10pt, fill: theme-text-secondary, weight: 500)[#upper(label)]
+    #v(sp-03)
+    #text(size: 36pt, weight: 300, fill: color)[#value]
+    #if trend != none {
+      v(sp-02)
+      let trend-color = if trend == "up" { green-50 } else if trend == "down" { red-60 } else { gray-50 }
+      let trend-icon = if trend == "up" { "↑" } else if trend == "down" { "↓" } else { "→" }
+      text(size: 11pt, fill: trend-color)[#trend-icon #trend-value]
+    }
+  ]
+}
+
+// ============================================
+// AVATAR
+// ============================================
+
+#let avatar(
+  initials,
+  size: 40pt,
+  color: blue-60
+) = {
+  circle(
+    radius: size / 2,
+    fill: color
+  )[
+    #align(center + horizon)[
+      #text(size: size / 2.5, weight: 600, fill: white)[#initials]
+    ]
+  ]
+}
+
+// ============================================
+// CHIP / PILL
+// ============================================
+
+#let chip(
+  content,
+  color: blue-60,
+  outlined: false
+) = {
+  if outlined {
+    box(
+      stroke: 1.5pt + color,
+      outset: (x: sp-03, y: sp-02),
+      radius: 16pt
+    )[
+      #text(size: 11pt, weight: 500, fill: color)[#content]
+    ]
+  } else {
+    box(
+      fill: color,
+      outset: (x: sp-03, y: sp-02),
+      radius: 16pt
+    )[
+      #text(size: 11pt, weight: 500, fill: white)[#content]
+    ]
+  }
+}
+
+// ============================================
+// KEY-VALUE PAIR
+// ============================================
+
+#let key-value(
+  key,
+  value,
+  separator: ":"
+) = {
+  grid(
+    columns: (auto, 1fr),
+    column-gutter: sp-03,
+    text(size: 11pt, weight: 600, fill: theme-text-secondary)[#key#separator],
+    text(size: 11pt, fill: theme-text-primary)[#value]
+  )
+}
+
+// ============================================
+// COMPARISON TABLE
+// ============================================
+
+#let comparison-table(
+  headers,
+  features,
+  check-symbol: "✓",
+  cross-symbol: "—"
+) = {
+  table(
+    columns: headers.len() + 1,
+    align: (left,) + (center,) * headers.len(),
+    table.header(
+      [*Feature*],
+      ..headers.map(h => [*#h*])
+    ),
+    ..for (feature, values) in features {
+      (
+        [#feature],
+        ..values.map(v => {
+          if v == true {
+            text(fill: green-50, weight: 600)[#check-symbol]
+          } else if v == false {
+            text(fill: gray-50)[#cross-symbol]
+          } else {
+            [#v]
+          }
+        })
+      )
+    }
+  )
+}
+
+// ============================================
+// FOOTNOTE
+// ============================================
+
+#let footnote-ref(num) = {
+  super(text(size: 9pt, fill: theme-link-primary)[#num])
+}
+
+#let footnote-content(num, content) = {
+  grid(
+    columns: (auto, 1fr),
+    column-gutter: sp-02,
+    text(size: 9pt, fill: theme-text-secondary)[#num.],
+    text(size: 9pt, fill: theme-text-secondary)[#content]
+  )
+}
+
+// ============================================
 // STATISTICS GRID
 // ============================================
 

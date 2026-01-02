@@ -411,6 +411,263 @@
 }
 
 // ============================================
+// STACKED BAR CHART
+// ============================================
+
+#let stacked-bar-chart(
+  data,  // Array of arrays: ((val1, val2, val3), (val1, val2, val3), ...)
+  labels: (),
+  series-names: (),
+  colors: dataviz-categorical,
+  height: 24pt,
+  show-legend: true
+) = {
+  // Calculate totals for each row
+  let totals = data.map(row => row.sum())
+  let max-total = calc.max(..totals)
+  
+  v(sp-05)
+  block(
+    width: 100%,
+    fill: white,
+    stroke: 1pt + theme-border-subtle,
+    radius: 4pt,
+    inset: sp-05
+  )[
+    // Legend
+    #if show-legend and series-names.len() > 0 {
+      chart-legend(series-names, colors: colors, columns: series-names.len())
+      v(sp-05)
+    }
+    
+    // Bars
+    #for (i, row) in data.enumerate() {
+      let label = if labels.len() > i { labels.at(i) } else { "Row " + str(i + 1) }
+      let total = totals.at(i)
+      
+      v(if i > 0 { sp-03 } else { 0pt })
+      
+      grid(
+        columns: (15%, 1fr, auto),
+        column-gutter: sp-03,
+        align(right + horizon)[
+          #text(size: 10pt, fill: theme-text-secondary)[#label]
+        ],
+        stack(
+          dir: ltr,
+          ..for (j, value) in row.enumerate() {
+            let color = colors.at(calc.rem(j, colors.len()))
+            let segment-width = (value / max-total) * 100%
+            block(
+              width: segment-width,
+              height: height,
+              fill: color
+            )
+          }
+        ),
+        align(horizon)[
+          #text(size: 10pt, weight: 600, fill: theme-text-primary)[#total]
+        ]
+      )
+    }
+  ]
+  v(sp-05)
+}
+
+// ============================================
+// BULLET CHART (KPI vs Target)
+// ============================================
+
+#let bullet-chart(
+  value,
+  target,
+  max-value: auto,
+  ranges: (60, 80, 100),  // Poor, Satisfactory, Good thresholds
+  label: none,
+  color: blue-60
+) = {
+  let computed-max = if max-value == auto { 
+    calc.max(value, target, ..ranges) * 1.1 
+  } else { 
+    max-value 
+  }
+  
+  let value-width = (value / computed-max) * 100%
+  let target-pos = (target / computed-max) * 100%
+  
+  v(sp-03)
+  if label != none {
+    text(size: 11pt, weight: 600, fill: theme-text-primary)[#label]
+    v(sp-02)
+  }
+  
+  block(
+    width: 100%,
+    height: 24pt
+  )[
+    // Background ranges
+    #place[
+      #grid(
+        columns: (
+          (ranges.at(0) / computed-max) * 100%,
+          ((ranges.at(1) - ranges.at(0)) / computed-max) * 100%,
+          ((ranges.at(2) - ranges.at(1)) / computed-max) * 100%
+        ),
+        block(width: 100%, height: 24pt, fill: gray-30),
+        block(width: 100%, height: 24pt, fill: gray-20),
+        block(width: 100%, height: 24pt, fill: gray-10)
+      )
+    ]
+    
+    // Value bar
+    #place[
+      #block(
+        width: value-width,
+        height: 12pt,
+        fill: color
+      )
+    ]
+    
+    // Target marker
+    #place(dx: target-pos, dy: 0pt)[
+      #block(width: 3pt, height: 24pt, fill: gray-100)
+    ]
+  ]
+  
+  v(sp-02)
+  grid(
+    columns: (1fr, 1fr),
+    text(size: 10pt, fill: theme-text-secondary)[Actual: *#value*],
+    align(right)[#text(size: 10pt, fill: theme-text-secondary)[Target: *#target*]]
+  )
+  v(sp-03)
+}
+
+// ============================================
+// HEAT MAP CELL
+// ============================================
+
+#let heatmap-cell(
+  value,
+  min-val: 0,
+  max-val: 100,
+  color-scale: dataviz-seq-blue,
+  size: 40pt
+) = {
+  let normalized = (value - min-val) / (max-val - min-val)
+  let color-index = calc.min(calc.floor(normalized * (color-scale.len() - 1)), color-scale.len() - 1)
+  let bg-color = color-scale.at(calc.max(0, color-index))
+  let text-color = if normalized > 0.5 { white } else { gray-100 }
+  
+  box(
+    width: size,
+    height: size,
+    fill: bg-color
+  )[
+    #align(center + horizon)[
+      #text(size: 10pt, weight: 600, fill: text-color)[#value]
+    ]
+  ]
+}
+
+// ============================================
+// DONUT CHART SEGMENT (Simple representation)
+// ============================================
+
+#let donut-stat(
+  value,
+  max-value: 100,
+  label: none,
+  color: blue-60,
+  size: 80pt
+) = {
+  let percentage = calc.round((value / max-value) * 100)
+  
+  align(center)[
+    #block(
+      width: size,
+      height: size
+    )[
+      // Outer ring (background)
+      #place(center)[
+        #circle(radius: size / 2, fill: gray-20)
+      ]
+      // Inner circle (creates donut effect)
+      #place(center)[
+        #circle(radius: size / 3, fill: white)
+      ]
+      // Center text
+      #place(center + horizon)[
+        #stack(
+          dir: ttb,
+          spacing: 2pt,
+          text(size: size / 4, weight: 300, fill: color)[#percentage%],
+          if label != none {
+            text(size: 8pt, fill: theme-text-secondary)[#label]
+          }
+        )
+      ]
+    ]
+  ]
+}
+
+// ============================================
+// COMPARISON BARS
+// ============================================
+
+#let comparison-bars(
+  items,  // Array of (label, value1, value2)
+  labels: ("Series A", "Series B"),
+  colors: (blue-60, purple-60),
+  max-value: auto
+) = {
+  let all-values = items.map(item => (item.at(1), item.at(2))).flatten()
+  let computed-max = if max-value == auto { calc.max(..all-values) } else { max-value }
+  
+  v(sp-05)
+  // Legend
+  grid(
+    columns: 2,
+    column-gutter: sp-05,
+    ..for (i, label) in labels.enumerate() {
+      (
+        stack(
+          dir: ltr,
+          spacing: sp-02,
+          box(width: 12pt, height: 12pt, fill: colors.at(i), radius: 2pt),
+          text(size: 10pt, fill: theme-text-primary)[#label]
+        ),
+      )
+    }
+  )
+  v(sp-04)
+  
+  // Bars
+  for (label, val1, val2) in items {
+    text(size: 11pt, weight: 600, fill: theme-text-primary)[#label]
+    v(sp-02)
+    
+    // First bar
+    block(
+      width: (val1 / computed-max) * 100%,
+      height: 12pt,
+      fill: colors.at(0),
+      radius: (right: 2pt)
+    )
+    v(sp-02)
+    
+    // Second bar
+    block(
+      width: (val2 / computed-max) * 100%,
+      height: 12pt,
+      fill: colors.at(1),
+      radius: (right: 2pt)
+    )
+    v(sp-04)
+  }
+}
+
+// ============================================
 // TYPOGRAPHY FUNCTIONS
 // ============================================
 

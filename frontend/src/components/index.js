@@ -32,3 +32,9 @@ export { AuthModal } from './auth';
 
 // Pricing components
 export { PricingModal } from './pricing';
+
+// Document components
+export { DocumentUploader } from './document';
+
+// Wizard components
+export { ReportWizard } from './wizard';

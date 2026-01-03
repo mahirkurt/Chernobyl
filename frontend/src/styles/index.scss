@@ -621,3 +621,154 @@ body {
   display: flex;
   align-items: center;
 }
+
+// =============================================================================
+// Workflow & Document Components
+// =============================================================================
+
+// Workflow Header
+.workflow-header {
+  padding: 1rem 2rem;
+  background: var(--cds-layer-01);
+  border-bottom: 1px solid var(--cds-border-subtle-01);
+}
+
+.workflow-steps {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+// Editor Preview Layout
+.editor-preview-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+// Processing Screen
+.processing-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex: 1;
+}
+
+// Login Prompt
+.login-prompt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 2rem;
+
+  &__card {
+    max-width: 480px;
+    padding: 3rem;
+    text-align: center;
+  }
+
+  &__icon {
+    color: var(--cds-interactive);
+    margin-bottom: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--cds-text-primary);
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    font-size: 1rem;
+    color: var(--cds-text-secondary);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+
+  &__features {
+    margin-top: 2rem;
+    text-align: left;
+  }
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  color: var(--cds-text-secondary);
+
+  svg {
+    color: var(--cds-support-success);
+    flex-shrink: 0;
+  }
+}
+
+// Settings Summary
+.settings-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+// Preview Panel Actions
+.preview-panel__actions {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-top: 1px solid var(--cds-border-subtle-01);
+  justify-content: flex-end;
+}
+
+// =============================================================================
+// App Footer
+// =============================================================================
+
+.app-footer {
+  background: var(--cds-layer-01);
+  border-top: 1px solid var(--cds-border-subtle-01);
+  padding: 1rem 2rem;
+
+  &__content {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  &__brand {
+    font-size: 0.875rem;
+    color: var(--cds-text-secondary);
+  }
+
+  &__links {
+    display: flex;
+    gap: 1.5rem;
+
+    a {
+      font-size: 0.875rem;
+      color: var(--cds-link-primary);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// =============================================================================
+// Component Imports
+// =============================================================================
+
+@import '../components/document/DocumentUploader.scss';
+@import '../components/wizard/ReportWizard.scss';
+@import '../components/layout/AppHeader.scss';
+@import '../components/layout/AppFooter.scss';
+@import '../components/auth/AuthModal.scss';
+@import '../components/pricing/PricingModal.scss';

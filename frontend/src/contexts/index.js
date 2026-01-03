@@ -10,3 +10,11 @@ export { AuthProvider, useAuth } from './AuthContext';
 
 // Pricing Context
 export { PricingProvider, usePricing, PRICING_TIERS, PAYG_PRICING } from './PricingContext';
+
+// Document Context
+export { 
+  DocumentProvider, 
+  useDocument, 
+  WORKFLOW_STEPS, 
+  SUPPORTED_FILE_TYPES 
+} from './DocumentContext';

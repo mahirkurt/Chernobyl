@@ -39,3 +39,26 @@ export {
 
 // Local storage
 export { useLocalStorage } from './useLocalStorage';
+
+// Intersection Observer - Viewport detection
+export {
+  useIntersectionObserver,
+  useLazyLoad,
+  useAnimateOnScroll,
+} from './useIntersectionObserver';
+
+// Stagger animations
+export {
+  useStaggerAnimation,
+  usePageLoadSequence,
+  calculateStaggerDelay,
+} from './useStaggerAnimation';
+
+// Debounce and throttle
+export {
+  useDebounce,
+  useDebouncedCallback,
+  useThrottle,
+  useThrottledCallback,
+  useSearchInput,
+} from './useDebounce';

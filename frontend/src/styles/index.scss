@@ -1,23 +1,16 @@
-// ============================================================================
-// Carbon Design System - Main Stylesheet
-// Refactored with proper structure, motion tokens, and accessibility
-// ============================================================================
+// Carbon Design System - Styles
+// Font warnings are expected - Google Fonts in index.html provides the fonts
+@use '@carbon/react';
 
 // Import abstracts (variables, mixins, motion tokens)
 @use 'abstracts' as *;
 
-// Import Carbon Design System
-@use '@carbon/react';
-
-// ============================================================================
-// CSS Custom Properties
-// ============================================================================
-
+// Custom CSS Variables for Carbon Design System
 :root {
   // Font Families
   --cds-font-family-sans: 'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --cds-font-family-serif: 'IBM Plex Serif', Georgia, serif;
-  --cds-font-family-mono: 'IBM Plex Mono', Menlo, Consolas, monospace;
+  --cds-font-family-mono: 'IBM Plex Mono', Menlo, monospace;
 
   // Carbon White Theme Colors
   --cds-background: #ffffff;
@@ -46,33 +39,42 @@
   --cds-support-info: #0043ce;
   --cds-focus: #0f62fe;
   --cds-highlight: #d0e2ff;
-  --cds-button-disabled: #c6c6c6;
   
-  // Skeleton colors
-  --cds-skeleton-background: #e0e0e0;
+  // Interactive State Tokens (Section 5)
+  --cds-layer-hover-01: rgba(141, 141, 141, 0.12);
+  --cds-layer-hover-02: rgba(141, 141, 141, 0.16);
+  --cds-layer-hover-03: rgba(141, 141, 141, 0.20);
+  --cds-layer-active-01: rgba(141, 141, 141, 0.50);
+  --cds-layer-active-02: rgba(141, 141, 141, 0.60);
+  --cds-layer-selected-01: rgba(141, 141, 141, 0.20);
+  --cds-layer-selected-02: rgba(141, 141, 141, 0.30);
+  --cds-layer-selected-hover-01: rgba(141, 141, 141, 0.32);
+  
+  // Disabled Tokens
+  --cds-text-disabled: rgba(22, 22, 22, 0.25);
+  --cds-icon-disabled: rgba(22, 22, 22, 0.25);
+  --cds-button-disabled: #c6c6c6;
+  --cds-border-disabled: rgba(22, 22, 22, 0.25);
+  
+  // Skeleton Tokens
+  --cds-skeleton-background: #e8e8e8;
   --cds-skeleton-element: #c6c6c6;
 }
 
-// Dark Theme (G100) Variables
-[data-carbon-theme="g100"],
-.cds--g100 {
-  --cds-background: #161616;
-  --cds-layer-01: #262626;
-  --cds-layer-02: #393939;
-  --cds-layer-accent-01: #393939;
-  --cds-field-01: #262626;
-  --cds-field-02: #393939;
-  --cds-border-subtle-01: #393939;
-  --cds-border-strong-01: #6f6f6f;
-  --cds-text-primary: #f4f4f4;
-  --cds-text-secondary: #c6c6c6;
-  --cds-icon-primary: #f4f4f4;
-  --cds-icon-secondary: #c6c6c6;
-  --cds-skeleton-background: #353535;
-  --cds-skeleton-element: #525252;
+// G10 Theme (Light Gray)
+[data-carbon-theme="g10"],
+.cds--g10 {
+  --cds-background: #f4f4f4;
+  --cds-layer-01: #ffffff;
+  --cds-layer-02: #e0e0e0;
+  --cds-layer-accent-01: #e0e0e0;
+  --cds-field-01: #ffffff;
+  --cds-field-02: #f4f4f4;
+  --cds-layer-hover-01: rgba(141, 141, 141, 0.12);
+  --cds-layer-active-01: rgba(141, 141, 141, 0.50);
 }
 
-// G90 Theme
+// G90 Theme (Dark Gray)
 [data-carbon-theme="g90"],
 .cds--g90 {
   --cds-background: #262626;
@@ -87,23 +89,36 @@
   --cds-text-secondary: #c6c6c6;
   --cds-icon-primary: #f4f4f4;
   --cds-icon-secondary: #c6c6c6;
+  --cds-layer-hover-01: rgba(141, 141, 141, 0.16);
+  --cds-layer-active-01: rgba(141, 141, 141, 0.40);
+  --cds-text-disabled: rgba(244, 244, 244, 0.25);
+  --cds-skeleton-background: #353535;
+  --cds-skeleton-element: #525252;
 }
 
-// G10 Theme
-[data-carbon-theme="g10"],
-.cds--g10 {
-  --cds-background: #f4f4f4;
-  --cds-layer-01: #ffffff;
-  --cds-layer-02: #e0e0e0;
+// G100 Theme (Full Dark)
+[data-carbon-theme="g100"],
+.cds--g100 {
+  --cds-background: #161616;
+  --cds-layer-01: #262626;
+  --cds-layer-02: #393939;
+  --cds-layer-accent-01: #393939;
+  --cds-field-01: #262626;
+  --cds-field-02: #393939;
+  --cds-border-subtle-01: #393939;
+  --cds-border-strong-01: #6f6f6f;
+  --cds-text-primary: #f4f4f4;
+  --cds-text-secondary: #c6c6c6;
+  --cds-icon-primary: #f4f4f4;
+  --cds-icon-secondary: #c6c6c6;
+  --cds-layer-hover-01: rgba(141, 141, 141, 0.16);
+  --cds-layer-active-01: rgba(141, 141, 141, 0.40);
+  --cds-text-disabled: rgba(244, 244, 244, 0.25);
+  --cds-skeleton-background: #353535;
+  --cds-skeleton-element: #525252;
 }
 
-// ============================================================================
-// Base Styles
-// ============================================================================
-
-*,
-*::before,
-*::after {
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -119,51 +134,9 @@ body,
 body {
   background-color: var(--cds-background);
   color: var(--cds-text-primary);
-  @include transition(background-color, $duration-moderate-02, $ease-standard-productive);
 }
 
-// ============================================================================
-// Accessibility Styles
-// ============================================================================
-
-// Visually hidden - accessible to screen readers only
-.visually-hidden {
-  @include visually-hidden;
-}
-
-// Skip link - visible on focus for keyboard navigation
-.skip-link {
-  position: fixed;
-  top: -100%;
-  left: $spacing-05;
-  z-index: $z-index-notification;
-  padding: $spacing-03 $spacing-05;
-  background-color: var(--cds-interactive);
-  color: var(--cds-text-on-color);
-  text-decoration: none;
-  font-weight: $font-weight-semibold;
-  border-radius: $border-radius-md;
-  @include transition-fast(top);
-  
-  &:focus {
-    top: $spacing-05;
-    @include focus-outline;
-  }
-}
-
-// Focus visible polyfill
-:focus:not(:focus-visible) {
-  outline: none;
-}
-
-:focus-visible {
-  @include focus-outline;
-}
-
-// ============================================================================
-// Scrollbar Styles
-// ============================================================================
-
+// Custom scrollbar
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -175,49 +148,28 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: var(--cds-border-strong-01);
-  border-radius: $border-radius-md;
-  @include transition-fast(background-color);
-
-  &:hover {
-    background: var(--cds-icon-secondary);
-  }
+  border-radius: 4px;
 }
 
-// Firefox scrollbar
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--cds-border-strong-01) var(--cds-layer-01);
+::-webkit-scrollbar-thumb:hover {
+  background: var(--cds-icon-secondary);
 }
 
-// ============================================================================
-// Layout Styles
-// ============================================================================
-
-.app-container {
-  display: flex;
-  flex-direction: column;
+// Layout utilities
+.full-height {
   height: 100%;
 }
 
-.main-content {
+.flex-grow {
   flex: 1;
-  display: flex;
-  overflow: hidden;
-  
-  &:focus {
-    outline: none;
-  }
 }
 
-// ============================================================================
-// Header Styles
-// ============================================================================
-
+// Header Logo
 .header-logo-link {
   display: flex;
   align-items: center;
   height: 100%;
-  padding: 0 $spacing-05;
+  padding: 0 1rem;
   text-decoration: none;
 }
 
@@ -226,177 +178,62 @@ body {
   width: auto;
 }
 
-// ============================================================================
-// Panel Base Styles
-// ============================================================================
+// Page container (legacy - use .app-container for new layout)
+.page-container,
+.app-container-legacy {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 
+// Main content area (legacy - use .app-main for new layout)
+.main-content,
+.app-main-legacy {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+// Panel styles
 .panel {
   display: flex;
   flex-direction: column;
   background: var(--cds-layer-01);
   border-right: 1px solid var(--cds-border-subtle-01);
-
+  
   &__header {
-    padding: $spacing-05;
+    padding: 1rem;
     border-bottom: 1px solid var(--cds-border-subtle-01);
-
+    
     h3 {
-      @include type-style('heading-compact-02');
+      font-size: 1rem;
+      font-weight: 600;
       color: var(--cds-text-primary);
-      display: flex;
-      align-items: center;
     }
-
+    
     p {
-      @include type-style('helper-text-01');
+      font-size: 0.75rem;
       color: var(--cds-text-secondary);
-      margin-top: $spacing-02;
+      margin-top: 0.25rem;
     }
   }
-
-  &__header-icon {
-    margin-right: $spacing-03;
-  }
-
+  
   &__content {
     flex: 1;
     overflow: auto;
-    padding: $spacing-05;
-    @include custom-scrollbar;
+    padding: 1rem;
   }
 }
 
-// ============================================================================
-// Settings Sidebar
-// ============================================================================
-
-.settings-sidebar {
-  width: 320px;
-  background: var(--cds-layer-01);
-  border-right: 1px solid var(--cds-border-subtle-01);
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  @include custom-scrollbar;
-  @include sidebar-transition;
-}
-
-.settings-section {
-  padding: $spacing-05;
-  border-bottom: 1px solid var(--cds-border-subtle-01);
-
-  &__title {
-    @include type-style('label-01');
-    color: var(--cds-text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: $spacing-04;
-  }
-}
-
-.action-button {
-  width: 100%;
-  margin-bottom: $spacing-03;
-  @include button-transition;
-  
-  &--primary {
-    margin-bottom: $spacing-03;
-  }
-  
-  &--secondary {
-    margin-bottom: 0;
-  }
-}
-
-.quick-access-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: $spacing-03;
-}
-
-// ============================================================================
-// File Upload Area
-// ============================================================================
-
-.file-upload-area {
-  border: 2px dashed var(--cds-border-strong-01);
-  border-radius: $border-radius-lg;
-  padding: $spacing-07;
-  text-align: center;
-  cursor: pointer;
-  @include transition-multiple(
-    border-color $duration-fast-02 $ease-standard-productive,
-    background-color $duration-fast-02 $ease-standard-productive
-  );
-
-  &:hover,
-  &:focus-within {
-    border-color: var(--cds-interactive);
-    background: var(--cds-layer-accent-01);
-  }
-
-  &:focus-visible {
-    @include focus-outline;
-  }
-
-  &__icon {
-    color: var(--cds-icon-secondary);
-    margin-bottom: $spacing-04;
-  }
-
-  &__text {
-    @include type-style('body-01');
-    color: var(--cds-text-secondary);
-  }
-
-  &__link {
-    color: var(--cds-link-primary);
-    text-decoration: underline;
-    cursor: pointer;
-    @include link-transition;
-
-    &:hover {
-      color: var(--cds-link-primary-hover);
-    }
-  }
-}
-
-// ============================================================================
-// Editor Panel
-// ============================================================================
-
+// Editor panel
 .editor-panel {
   flex: 1;
   display: flex;
   flex-direction: column;
   min-width: 400px;
-  @include animate-fade-in;
 }
 
-.markdown-editor {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-
-  &__textarea {
-    width: 100%;
-    height: 100% !important;
-    min-height: 100%;
-    
-    textarea {
-      font-family: var(--cds-font-family-mono) !important;
-      font-size: 0.875rem !important;
-      line-height: 1.6 !important;
-      resize: none !important;
-      @include custom-scrollbar;
-    }
-  }
-}
-
-// ============================================================================
-// Preview Panel
-// ============================================================================
-
+// Preview panel
 .preview-panel {
   flex: 1;
   display: flex;
@@ -404,297 +241,383 @@ body {
   min-width: 400px;
   background: var(--cds-background);
   border-left: 1px solid var(--cds-border-subtle-01);
-  border-right: none;
 }
 
+// Markdown editor
+.markdown-editor {
+  flex: 1;
+  
+  textarea {
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    border: none;
+    resize: none;
+    font-family: var(--cds-font-family-mono);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    background: var(--cds-field-01);
+    color: var(--cds-text-primary);
+    
+    &:focus {
+      outline: 2px solid var(--cds-focus);
+      outline-offset: -2px;
+    }
+  }
+}
+
+// PDF Preview
 .pdf-preview {
   flex: 1;
   display: flex;
   flex-direction: column;
-
+  
   &__container {
     flex: 1;
-    padding: $spacing-07;
+    padding: 2rem;
     overflow: auto;
     background: var(--cds-layer-accent-01);
-    @include custom-scrollbar;
   }
-
+  
   &__document {
     max-width: 800px;
     margin: 0 auto;
     background: white;
-    box-shadow: $shadow-raised-02;
-    padding: $spacing-09;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    padding: 3rem;
     min-height: 1000px;
-    @include animate-scale-in;
-  }
-
-  &__loading {
-    @include flex-center;
-    height: 300px;
-  }
-
-  &__content {
-    font-family: var(--cds-font-family-sans);
-    white-space: pre-wrap;
   }
 }
 
-// Preview content styles
-.preview-h1 {
-  @include type-style('heading-06');
-  margin-bottom: $spacing-05;
-  color: #161616;
-}
-
-.preview-h2 {
-  @include type-style('heading-04');
-  margin: $spacing-06 0 $spacing-04;
-  color: #161616;
-}
-
-.preview-h3 {
-  @include type-style('heading-03');
-  margin: $spacing-05 0 $spacing-03;
-  color: #161616;
-}
-
-.preview-code {
-  background: #f4f4f4;
-  padding: $spacing-01 $spacing-02;
-  font-family: var(--cds-font-family-mono);
-  font-size: 0.875rem;
-  border-radius: $border-radius-sm;
-}
-
-.preview-blockquote {
-  border-left: 3px solid #0f62fe;
-  padding-left: $spacing-05;
-  color: #525252;
-  margin: $spacing-05 0;
-  font-style: italic;
-}
-
-.preview-li {
-  margin-left: $spacing-06;
-  margin-bottom: $spacing-02;
-}
-
-// ============================================================================
-// AI Advisor Panel
-// ============================================================================
-
+// =============================================================================
+// DEPRECATED - AI Advisor panel styles (removed in v2.0)
+// =============================================================================
+/*
 .advisor-panel {
   width: 360px;
   display: flex;
   flex-direction: column;
   background: var(--cds-layer-01);
   border-left: 1px solid var(--cds-border-subtle-01);
-  @include animate-slide-in-right;
 }
 
 .chat-messages {
   flex: 1;
   overflow: auto;
-  padding: $spacing-05;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: $spacing-04;
-  @include custom-scrollbar;
+  gap: 1rem;
 }
 
 .chat-message {
   display: flex;
-  gap: $spacing-04;
-  @include animate-slide-in-bottom;
-  @include stagger-delay;
-
+  gap: 0.75rem;
+  
   &--user {
     flex-direction: row-reverse;
-
+    
     .chat-message__content {
       background: var(--cds-interactive);
       color: var(--cds-text-on-color);
     }
   }
-
+  
   &--ai {
     .chat-message__content {
       background: var(--cds-layer-02);
     }
   }
-
+  
   &__avatar {
     width: 32px;
     height: 32px;
-    border-radius: $border-radius-full;
-    @include flex-center;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
-
+    
     &--user {
       background: var(--cds-interactive);
       color: white;
     }
-
+    
     &--ai {
       background: var(--cds-support-info);
       color: white;
     }
   }
-
+  
   &__content {
-    padding: $spacing-04 $spacing-05;
-    border-radius: $border-radius-lg;
-    @include type-style('body-01');
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    line-height: 1.5;
     max-width: 85%;
   }
 }
 
 .chat-input {
-  padding: $spacing-05;
+  padding: 1rem;
   border-top: 1px solid var(--cds-border-subtle-01);
   display: flex;
-  gap: $spacing-03;
-  align-items: flex-end;
-
-  &__textarea {
-    flex: 1;
-  }
-
-  &__button {
-    flex-shrink: 0;
-  }
+  gap: 0.5rem;
 }
+*/
+// =============================================================================
 
-// ============================================================================
-// Settings Modal
-// ============================================================================
-
-.settings-modal__section {
+// Settings sidebar
+.settings-sidebar {
+  width: 320px;
+  background: var(--cds-layer-01);
+  border-right: 1px solid var(--cds-border-subtle-01);
   display: flex;
   flex-direction: column;
-  gap: $spacing-05;
-  padding-top: $spacing-05;
 }
 
-// ============================================================================
-// Notification Container
-// ============================================================================
-
-.notification-container {
-  position: fixed;
-  bottom: $spacing-05;
-  right: $spacing-05;
-  z-index: $z-index-notification;
-  @include animate(notification-enter, $duration-moderate-02);
+.settings-section {
+  padding: 1rem;
+  border-bottom: 1px solid var(--cds-border-subtle-01);
+  
+  &__title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--cds-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+  }
 }
 
-// ============================================================================
-// Stat Tiles
-// ============================================================================
-
+// Stat tiles
 .stat-tiles {
-  @include grid-auto-fit(150px, $spacing-05);
-  margin-bottom: $spacing-05;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .stat-tile {
   background: var(--cds-layer-01);
   border: 1px solid var(--cds-border-subtle-01);
-  border-radius: $border-radius-md;
-  padding: $spacing-05;
-  @include card-hover;
-
+  border-radius: 4px;
+  padding: 1rem;
+  
   &__value {
-    @include type-style('heading-05');
+    font-size: 2rem;
+    font-weight: 300;
     color: var(--cds-interactive);
     line-height: 1;
   }
-
+  
   &__label {
-    @include type-style('label-01');
+    font-size: 0.75rem;
     color: var(--cds-text-secondary);
-    margin-top: $spacing-03;
+    margin-top: 0.5rem;
     text-transform: uppercase;
   }
 }
 
-// ============================================================================
-// Responsive Styles
-// ============================================================================
+// Theme toggle
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: var(--cds-layer-02);
+  border-radius: 4px;
+}
 
-@include breakpoint-down(xlg) {
-  .advisor-panel {
+// File upload area
+.file-upload-area {
+  border: 2px dashed var(--cds-border-strong-01);
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  
+  &:hover {
+    border-color: var(--cds-interactive);
+    background: var(--cds-layer-accent-01);
+  }
+  
+  &--active {
+    border-color: var(--cds-interactive);
+    background: var(--cds-highlight);
+  }
+  
+  &__icon {
+    font-size: 2rem;
+    color: var(--cds-icon-secondary);
+    margin-bottom: 1rem;
+  }
+  
+  &__text {
+    font-size: 0.875rem;
+    color: var(--cds-text-secondary);
+  }
+  
+  &__link {
+    color: var(--cds-link-primary);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 1200px) {
+  .app-header__nav {
     display: none;
   }
 }
 
-@include breakpoint-down(lg) {
-  .main-content {
+@media (max-width: 900px) {
+  .app-workspace {
     flex-direction: column;
   }
-
+  
   .settings-sidebar {
     width: 100%;
     border-right: none;
     border-bottom: 1px solid var(--cds-border-subtle-01);
-    flex-direction: row;
-    flex-wrap: wrap;
-    overflow-x: auto;
   }
-
-  .settings-section {
-    flex: 1;
-    min-width: 200px;
-    border-bottom: none;
-    border-right: 1px solid var(--cds-border-subtle-01);
-
-    &:last-child {
-      border-right: none;
-    }
-  }
-
+  
   .editor-panel,
   .preview-panel {
     min-width: unset;
-    flex: 1;
   }
 }
 
-@include breakpoint-down(md) {
-  .settings-sidebar {
-    flex-direction: column;
+// =============================================================================
+// New App Layout (v2.0)
+// =============================================================================
+
+// App container
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+// App Header
+.app-header {
+  &__logo-link {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 1rem;
+    text-decoration: none;
   }
 
-  .settings-section {
-    border-right: none;
+  &__logo {
+    height: 24px;
+    width: auto;
+  }
+
+  &__nav {
+    display: none;
+
+    @media (min-width: 66rem) {
+      display: flex;
+    }
+  }
+
+  &__credits {
+    display: flex;
+    align-items: center;
+    padding: 0 0.5rem;
+  }
+
+  &__user-panel {
+    padding: 1rem;
+    width: 280px;
+  }
+
+  &__user-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding-bottom: 1rem;
+    margin-bottom: 0.5rem;
     border-bottom: 1px solid var(--cds-border-subtle-01);
   }
 
-  .pdf-preview__document {
-    padding: $spacing-05;
+  &__user-avatar {
+    flex-shrink: 0;
+  }
+
+  &__user-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  &__user-name {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--cds-text-primary);
+  }
+
+  &__user-email {
+    font-size: 0.75rem;
+    color: var(--cds-text-secondary);
   }
 }
 
-// ============================================================================
-// Print Styles
-// ============================================================================
+// App Main
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: 48px; // Header height
+}
 
-@media print {
-  .settings-sidebar,
-  .advisor-panel,
-  .notification-container,
-  .skip-link {
-    display: none !important;
-  }
+// App Workspace (Editor area)
+.app-workspace {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
 
-  .main-content {
-    display: block;
-  }
+// Credit tile in sidebar
+.credit-tile {
+  padding: 1rem;
 
-  .pdf-preview__document {
-    box-shadow: none;
-    padding: 0;
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+
+    span {
+      color: var(--cds-text-secondary);
+    }
+
+    strong {
+      color: var(--cds-text-primary);
+    }
   }
+}
+
+// App Notification
+.app-notification {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 9999;
+  max-width: 400px;
+}
+
+// Fix Carbon Header Panel z-index
+.cds--header-panel {
+  z-index: 8001;
+}
+
+// Switcher item styling
+.cds--switcher__item-link {
+  display: flex;
+  align-items: center;
 }
